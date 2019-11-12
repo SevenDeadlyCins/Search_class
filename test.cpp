@@ -3,7 +3,7 @@
 #include <string>
 #include <map>
 using namespace std;
-
+//this file is primarily to test a simpler version of that I'm trying to do, not related to the Search class, but here for anyone that wants to see it.
 void searchDrinks(map<string, int>& drinkS, const string& name, map<string, int>& res)
 {
 	map<string, int>::iterator i = drinkS.begin();
