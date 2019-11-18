@@ -3,41 +3,54 @@
 #include <string>
 #include <map>
 using namespace std;
-//this file is primarily to test a simpler version of that I'm trying to do, not related to the Search class, but here for anyone that wants to see it.
-void searchDrinks(map<string, int>& drinkS, const string& name, map<string, int>& res)
+
+typedef int val;
+
+void searchDrinks(map<string, val>& drinkS, const string& name, map<string, val>& res)
 {
-	map<string, int>::iterator i = drinkS.begin();
-	map<string, int>::iterator it = drinkS.end();
-	for (i = drinkS.begin(); i != drinkS.end(); i++)
+	map<string, val>::iterator i; //creates an iterator to access the key and value in the map
+	for (i = drinkS.begin(); i != drinkS.end(); i++) //while there are still values to check in the map
 	{
-		const string& key = i->first;
-		if (key.compare(0, key.length(), name, name.length()) == 0)
+		const string& key = i->first; //sets the key to the current key in the map
+		if (key.compare(0, name.size(), name, 0, name.size()) == 0) //if the first name.size() characters in key are the same as the first name.size() characters in name, then...
 		{
-			res.insert(pair<string, int>(i->first, i->second));
+			res.insert(pair<string, val>(i->first, i->second)); //...the current key and value in drinkS will be stored into res, and will be returned by reference at the end of the loop.
 		}
 	}
 }
 
 int main()
 {
-	map<string, int> teststore =
+	//test map
+	map<string, val> teststore =
 	{
 		{"test123", 123},
 		{"test134", 134},
 		{"test245", 245},
 		{"test256", 256}
 	};
-	map<string, int> result;
-	string na;
-	while (na != "done")
+	map<string, val> result; //returned maps
+	string na; //user input
+	cout << "Search: ";
+	cin >> na; //asks user for input
+	while (na != "exit") //while the value is not exit
 	{
-		cin >> na;
-		searchDrinks(teststore, na, result);
-		map<string, int>::const_iterator it = result.lower_bound(na);
-		while (result.empty() == false)
+		searchDrinks(teststore, na, result); //search is called with the test map, the search and any maps that match the search will be returned to result
+		map<string, val>::iterator it; //iterator to go through the result map
+		if (result.empty() == false) //if there was anything that matched the search
 		{
-			cout << it->first << " => " << it->second << endl;
-			result.erase(result.begin());
+			for (it = result.begin(); it != result.end(); it++) //output all of the values in result
+			{
+				cout << it->first << " => " << it->second << endl;
+			}
+			cout << endl;
 		}
+		else //no results were found durring the search
+		{
+			cout << "No results found. \n \n";
+		}
+		cout << "Search: ";
+		cin >> na;
+		result.clear(); //clear all of the results when a new search begins
 	}
 }
